@@ -1,0 +1,67 @@
+out_to_console yes
+out_to_x no
+background yes
+update_interval 1
+total_run_times 0
+no_buffers yes
+
+default_color FFFFFF #blanc
+default_shade_color 333333
+default_outline_color black
+
+use_xft yes
+
+color0 EEEEEE #normal
+color1 B3B3B3 #gris
+color2 FDA53C #orange
+color3 E8DD9E #jaune
+color4 A6D4E0 #bleu
+color5 FFA500 #camel
+color6 BDE077 #vert
+color7 D8ADFF #mauve
+color8 FF95D1 #rose
+
+ 
+ TEXT
+ ^s[right;\#9270D1;  mem ]\
+ ${if_match $memperc >= 89}\
+ ^s[right;\#E95C59;$memperc% ]^p[right;10;10;0;$memperc;100;\#111111;\#E95C59;ckymem](1;spawn;urxvt -e htop)^s[right;\#E95C59; !]\
+ $endif\
+ \
+ ${if_match $memperc >= 50}\
+ ${if_match $memperc <= 88}\
+ ^s[right;\#edb36f;$memperc% ]^p[right;10;10;0;$memperc;100;\#111111;\#edb36f;ckymem](1;spawn;urxvt -e htop)\
+ $endif\
+ $endif\
+ \
+ ${if_match $memperc <= 49}\
+ ^s[right;\#4a9b6c;$memperc% ]^p[right;10;10;0;$memperc;100;\#111111;\#4a9b6c;ckymem](1;spawn;urxvt -e htop)\
+ $endif\
+ \
+ \
+ ^s[right;\#9270D1;  cpu ]\
+ ${if_match $cpu >= 89}\
+ ^s[right;\#E95C59;${cpu}% ] ^p[right;10;10;0;${cpu};100;\#111111;\#E95C59;ckycpu](1;spawn;urxvt -e htop)^s[right;\#E95C59; !]\
+ $endif\
+ \
+ ${if_match $cpu >= 50}\
+ ${if_match $cpu <= 88}\
+ ^s[right;\#edb36f;${cpu}% ] ^p[right;10;10;0;${cpu};100;\#111111;\#edb36f;ckycpu]\
+ $endif\
+ $endif\
+ \
+ ${if_match $cpu <= 49}\
+ ^s[right;\#4a9b6c;${cpu}% ] ^p[right;10;10;0;${cpu};100;\#111111;\#4a9b6c;ckycpu]\
+ $endif\
+ \
+ \
+ ${if_up wlp6s0}\
+ ^s[right;\#9270d1;  up/down]^s[right;\#8998a1; ${upspeedf wlp6s0}kb /]\
+ ^s[right;\#edb36f; ${downspeedf wlp6s0}kb]\
+ $else\
+ ^s[right;\#cccccc;  up/down - / -]\
+ $endif\
+ \
+ \
+ \
+ ^s[right;\#8998a1;  ${time %A %e %B %Y}] ^s[right;\#cccccc; ${time %R}]\

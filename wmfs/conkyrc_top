@@ -1,0 +1,21 @@
+out_to_console yes
+out_to_x no
+background yes
+update_interval 1
+total_run_times 0
+no_buffers yes
+
+TEXT
+^s[right;\#BBBBBB; Uptime:] ^s[right;\#BDE077; $uptime_short]\
+^s[right;\#444444;  ]\
+^s[right;\#BBBBBB; CPU:] ^s[right;\#FDA53C; ${cpu}% ]^p[right;8;10;0;${cpu};100;\#445544;\#FDA53C;cpugraph](1;spawn;urxvtc -e htop)\
+^s[right;\#444444;  ]\
+^s[right;\#BBBBBB; RAM:] ^s[right;\#CCAA00; ${mem}/${memmax} ${memperc}% ] ^p[right;8;10;0;${memperc};100;\#445544;\#CCAA00;memgraph]\
+^s[right;\#444444;  ]\
+^s[right;\#BBBBBB; Down/Up:] ^s[right;\#E8DD9E; ${downspeedf wlp6s0}KiB/${upspeedf wlp6s0}KiB](1;spawn;urxvtc -e wicd-curses)\
+^s[right;\#444444;  ]\
+^s[right;\#BBBBBB; Battery: ] ^s[right;\#FFFFFF; ${battery} ${battery_time} ]\
+^s[right;\#444444;  ]\
+^s[right;\#BBBBBB; Volume: ] ${if_empty ${exec amixer get Master | grep "Front Left:" | awk '{print $6}' | grep -oE "off"}} ^s[right;\#A6D4E0;${exec amixer get Master | grep "Front Left: " | awk '{print $5}' | grep -oE "[[:digit:]]{1,}"%} ](1;spawn;urxvtc -e alsamixer)  ^p[right;8;10;0;${exec amixer get Master | grep "Front Left: " | awk '{print $5}' | grep -oE "[[:digit:]]{1,}"};100;\#445544;\#A6D4E0;ckyhdd]${else} ^s[right;\#A6D4E0; 0% ] ^p[right;8;10;0;0;100;\#445544;\A6D4E0]${endif}(1;spawn;urxvtc -e alsamixer)\
+^s[right;\#444444;  ]\
+^s[right;\#CCCCCC; ${time %A %d %B}] ^s[right;\#A6D4E0; ${time %H:%M}   ]\
