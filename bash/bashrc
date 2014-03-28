@@ -1,0 +1,32 @@
+#
+# ~/.bashrc
+#
+
+export EDITOR=vim
+export NBCORECPU=`cat /proc/cpuinfo | grep 'model name' | wc -l`
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+alias ls='ls --color=auto'
+PS1='[\u@\h \W]\$ '
+
+
+###############
+#  auto sudo  #
+###############
+
+alias pacman='sudo pacman'
+alias reboot='sudo reboot'
+alias halt='sudo shutdown -h now'
+alias poweroff='sudo shutdow -h now'
+alias systemctl='sudo systemctl'
+alias feg='feh --scale-down'
+
+###########
+#  Autre  #
+###########
+
+alias xpdf='xpdf -fullscreen'
+alias make="make -j${NBCORECPU}"
+
