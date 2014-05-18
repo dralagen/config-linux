@@ -1,6 +1,6 @@
 #!/bin/bash
 
-basedir="/qnapy"
+basedir="/home/dralagen/qnapy"
 
 if [ $# -gt 0 ]; then
 	mnt="$1"
@@ -12,8 +12,7 @@ if [ ! -d $basedir ] ; then
 	mkdir $basedir
 fi
 
-read -s -p "Qnapy's Password : " password
-echo ""
+password="`zenity --password --title="Qnapy's Password"`"
 
 for dir in $mnt; do
 	if [ ! -d $basedir/$dir ] ; then
@@ -21,8 +20,7 @@ for dir in $mnt; do
 		mkdir $basedir/$dir
 	fi
 
-	echo "$dir"
-	sudo mount.cifs //192.168.1.1/$dir $basedir/$dir -o username="dralagen",password="${password}",uid=1000,gid=100,rw,iocharset=utf8 && echo "mount /qnapy/$dir"
+	sudo mount.cifs //192.168.1.1/$dir $basedir/$dir -o username="dralagen",password="${password}",uid=1000,gid=100,rw,iocharset=utf8 && echo "mount $basedir/$dir"
 
 done
 
