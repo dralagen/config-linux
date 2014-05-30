@@ -16,6 +16,18 @@ if [ -e "$search" ]; then
 	rm -R "$search"
 fi
 
+search="$dir/.@__qini"
+if [ -e "$search" ]; then
+	echo "$search;"
+	rm -R "$search"
+fi
+
+search="$dir/@Recycle"
+if [ -e "$search" ]; then
+	echo "$search;"
+	rm -R "$search"
+fi
+
 search="$dir/@Transcode"
 if [ -e "$search" ]; then
 	echo "$search;"
