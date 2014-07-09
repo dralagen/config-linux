@@ -11,6 +11,9 @@ export NBCORECPU=`cat /proc/cpuinfo | grep 'model name' | wc -l`
 alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
+if [[ $(tty) = /dev/pts/0 ]]; then
+  xrdb -merge ~/.Xdefaults
+fi
 
 ###############
 #  auto sudo  #
@@ -29,4 +32,6 @@ alias feg='feh --scale-down'
 
 alias xpdf='xpdf -fullscreen'
 alias make="make -j${NBCORECPU}"
+
+[[ -f ~/.bashrc_custom ]] && . ~/.bashrc_custom
 

@@ -7,8 +7,11 @@ then
 	ssh-agent -s > /tmp/ssh.keys
 	. /tmp/ssh.keys
 	rm /tmp/ssh.keys
-	
+
 	startx
 fi
 
+PATH="$PATH:/home/dralagen/.scripts/"
+
 [[ -f ~/.bashrc ]] && . ~/.bashrc
+
