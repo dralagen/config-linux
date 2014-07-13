@@ -37,13 +37,16 @@
 *color7: #e0e0e0
 *color15: #e5e5e5
 
+URxvt*.transparent: true
+! URxvt*.shading: 0 to 99 darkens, 101 to 200 lightens
+URxvt*.shading: 10
+
 URxvt.perl-ext-common:  default,matcher
 URxvt.url-launcher:     chromium
 URxvt.matcher.button:   3
 URxvt.scrollBar: false
 URxvt.savelines:65000
 URxvt.font: xft:Monospace-10
-
 
 URxvt.keysym.S-Up: \033[1;2A
 URxvt.keysym.S-Down: \033[1;2B
