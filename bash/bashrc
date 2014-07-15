@@ -4,6 +4,7 @@
 
 export EDITOR=vim
 export NBCORECPU=`cat /proc/cpuinfo | grep 'model name' | wc -l`
+export CHROME_BIN="/usr/bin/chromium"
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
