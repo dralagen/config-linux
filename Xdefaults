@@ -1,45 +1,49 @@
 !-------------------------------------------------------------------------------
 !! Colors
 !
-*background: #181818
-*foreground: #c0c0c0
-*cursorColor: #93a1a1
+*background: #2c2c2c
+*foreground: #dcdcdc
+*cursorColor: #aaaaaa
+
+! transparent
+URxvt.depth: 32
+URxvt*background: [90]#000000
 
 !! black dark/light
-*color0: #121212
-*color8: #2e3436
+*color0: #3F3F3F
+*color8: #709080
 
 !! red dark/light
-*color1: #a35b66
-*color9: #ab6b74
+*color1: #B07E7E
+*color9: #DCA3A3
 
 !! green dark/light
-*color2: #99ab6f
-*color10: #acb972
+*color2: #60B48A
+*color10: #72D5A3
 
 !! yellow dark/light
-*color3: #ca9733
-*color11: #ccaa69
+*color3: #DFAF8F
+*color11: #F0DFAF
 
 !! blue dark/light
-*color4: #495d6e
-*color12: #687987
+*color4: #9AB8D7
+*color12: #94BFF3
 
 !! magenta dark/light
-*color5: #825969
-*color13: #977381
+*color5: #E56B67
+*color13: #FF8B7D
 
 !! cyan dark/light
-*color6: #839191
-*color14: #98a4a4
+*color6: #7797BC
+*color14: #93A9E3
 
 !! white dark/light
-*color7: #e0e0e0
-*color15: #e5e5e5
+*color7: #DCDCDC
+*color15: #FFFFFF
 
-URxvt*.transparent: true
+URxvt*.transparent: false
 ! URxvt*.shading: 0 to 99 darkens, 101 to 200 lightens
-URxvt*.shading: 10
+! URxvt*.shading: 15
 
 URxvt.perl-ext-common:  default,matcher
 URxvt.url-launcher:     chromium
