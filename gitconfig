@@ -9,4 +9,13 @@
 	glog = log --graph --tags --branches --all --decorate --oneline
 [credential]
 	helper = cache --timeout 43200
-
+[color]
+	status = auto
+	branch = auto
+	diff = auto
+	interactive = auto
+	ui = true
+[core]
+	editor = vim
+[help]
+	autocorrect = 1
