@@ -35,9 +35,9 @@ export GIT_PROMPT_FETCH_REMOTE_STATUS=1
 source "</my/repo/config-linux>/bash/git-prompt/gitprompt.sh"
 ```
 
-For customize your prompt copy _</my/repo/config-linux>/bash/git-prompt-colors.sh_ to _~/.git-prompt-colors.sh_ and edit as you want.
+For customize your prompt, you can copy _bash/git-prompt-colors.sh_ to _~/.git-prompt-colors.sh_ and edit as you want.
 
-The order of variable without space
+The order of variables without any space is :
 ```
 ${LAST_COMMAND_INDICATOR}
 ${GIT_PROMPT_START_ROOT}
@@ -61,7 +61,7 @@ ${PROMPT_END}
 Color scheme
 ------------
 
-For install color scheme for URxvt just copy _</my/repo/config-linux>/Xdefaults_ to _~/.Xdefaults_
+For install color scheme for URxvt just copy _Xdefaults_ to _~/.Xdefaults_
 ```
 ln -s </my/repo/config-linux>/Xdefaults ~/.Xdefaults
 ```
@@ -81,5 +81,5 @@ Note
 I use link, not copy because when I pull in this repo, I want update my config system.
 
 
-We want to replace _</my/repo/config-linux/>_ by the path of this repo in your system. If you want juste add some line we use copy/paste with your favorite editor.
+We want to replace _/my/repo/config-linux/_ by the path of this repo in your system. If you want juste add some line we use copy/paste with your favorite editor.
 
