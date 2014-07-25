@@ -29,15 +29,41 @@ export CHROME_BIN="/usr/bin/chromium"
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# alias for this computeur
-[[ -f ~/.bash_aliases ]] && . ~/.bash_aliases
+# PS1
+ResetColor="\[\033[0m\]"
+IntenseBlack="\[\033[0;90m\]"
+Yellow="\[\033[0;33m\]"
 
-alias ls='ls --color=auto'
-PS1='[\u@\h \W]\$ '
+PS1="${IntenseBlack}\u@\h${ResetColor}:${Yellow}\w${ResetColor}$ "
 
+# merge color if the first X console
 if [[ $(tty) = /dev/pts/0 ]]; then
 	xrdb -merge ~/.Xdefaults
 fi
+
+################
+#  git prompt  #
+################
+
+export GIT_PROMPT_ONLY_IN_REPO=1
+export GIT_PROMPT_FETCH_REMOTE_STATUS=1
+
+source "$REPO_GIT/git-prompt/gitprompt.sh"
+
+#################
+# popular alias #
+#################
+
+alias ls='ls --color=auto'
+alias ll='ls -lha'
+alias la='ls -A'
+
+alias df='df -H'
+alias du='du -ch'
+
+alias ..='cd ..'
+alias grep='grep --color=auto'
+alias vi='vim'
 
 ###############
 #  auto sudo  #
@@ -60,13 +86,6 @@ alias make="make -j${NBCORECPU}"
 # custom bashrc for this computeur
 [[ -f ~/.bashrc_custom ]] && . ~/.bashrc_custom
 
-
-################
-#  git prompt  #
-################
-
-export GIT_PROMPT_ONLY_IN_REPO=0
-export GIT_PROMPT_FETCH_REMOTE_STATUS=1
-
-source "$REPO_GIT/git-prompt/gitprompt.sh"
+# alias for this computeur
+[[ -f ~/.bash_aliases ]] && . ~/.bash_aliases
 

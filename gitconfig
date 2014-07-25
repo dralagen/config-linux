@@ -7,6 +7,8 @@
 	logg = log --graph --oneline --decorate
 	up = pull --rebase
 	glog = log --graph --tags --branches --all --decorate --oneline
+	sf = flow feature start
+	ff = flow feature finish
 [credential]
 	helper = cache --timeout 43200
 [color]
