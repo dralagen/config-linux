@@ -41,6 +41,9 @@ if [[ $(tty) = /dev/pts/0 ]]; then
 	xrdb -merge ~/.Xdefaults
 fi
 
+# auto cd when juste path
+shopt -s autocd
+
 ################
 #  git prompt  #
 ################
