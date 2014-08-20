@@ -9,6 +9,8 @@
 	glog = log --graph --tags --branches --all --decorate --oneline
 	sf = flow feature start
 	ff = flow feature finish
+	st = status
+	co = commit
 [credential]
 	helper = cache --timeout 43200
 [color]
