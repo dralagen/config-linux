@@ -83,6 +83,8 @@ alias feg='feh --scale-down'
 #  Autre  #
 ###########
 
+alias cpumaxfreq='sudo cpupower frequency-set -u'
+alias cpuinfo='sudo cpupower frequency-info'
 alias xpdf='xpdf -fullscreen'
 alias make="make -j${NBCORECPU}"
 
