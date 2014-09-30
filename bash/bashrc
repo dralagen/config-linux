@@ -8,13 +8,13 @@
 
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
-	TARGET="$(readlink "$SOURCE")"
-	if [[ $SOURCE == /* ]]; then
-		SOURCE="$TARGET"
-	else
-		DIR="$( dirname "$SOURCE" )"
-		SOURCE="$DIR/$TARGET" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
-	fi
+    TARGET="$(readlink "$SOURCE")"
+    if [[ $SOURCE == /* ]]; then
+        SOURCE="$TARGET"
+    else
+        DIR="$( dirname "$SOURCE" )"
+        SOURCE="$DIR/$TARGET" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+    fi
 done
 REPO_GIT="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
@@ -38,7 +38,7 @@ PS1="${IntenseBlack}\u@\h${ResetColor}:${Yellow}\w${ResetColor}$ "
 
 # merge color if the first X console
 if [[ $(tty) = /dev/pts/0 ]]; then
-	xrdb -merge ~/.Xdefaults
+    xrdb -merge ~/.Xdefaults
 fi
 
 # auto cd when juste path
@@ -91,4 +91,27 @@ alias make="make -j${NBCORECPU}"
 
 # alias for this computeur
 [[ -f ~/.bash_aliases ]] && . ~/.bash_aliases
+
+
+#########
+# Proxy #
+#########
+
+function proxy_on() {
+    export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
+    export http_proxy="http://cache.wifi.univ-nantes.fr:3128"
+    export https_proxy=$http_proxy
+    export ftp_proxy=$http_proxy
+    export rsync_proxy=$http_proxy
+    echo "Proxy environment variable set."
+    return 0
+}
+
+function proxy_off() {
+    unset http_proxy
+    unset https_proxy
+    unset ftp_proxy
+    unset rsync_proxy
+    echo -e "Proxy environment variable removed."
+}
 
