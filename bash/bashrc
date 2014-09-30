@@ -102,7 +102,7 @@ alias make="make -j${NBCORECPU}"
 
 function proxy_on() {
     export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
-    export http_proxy="http://cache.wifi.univ-nantes.fr:3128"
+    export http_proxy="http://cache.etu.univ-nantes.fr:3128"
     export https_proxy=$http_proxy
     export ftp_proxy=$http_proxy
     export rsync_proxy=$http_proxy
