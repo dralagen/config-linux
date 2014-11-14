@@ -9,36 +9,16 @@ fi
 
 cd "$dir"
 
+target=".@__thumb .@__qini @Recycle @Transcode thumb.db desktop.ini .Trash-*"
 
-search="$dir/.@__thumb"
-if [ -e "$search" ]; then
-	echo "$search;"
-	rm -R "$search"
-fi
 
-search="$dir/.@__qini"
-if [ -e "$search" ]; then
-	echo "$search;"
-	rm -R "$search"
-fi
-
-search="$dir/@Recycle"
-if [ -e "$search" ]; then
-	echo "$search;"
-	rm -R "$search"
-fi
-
-search="$dir/@Transcode"
-if [ -e "$search" ]; then
-	echo "$search;"
-	rm -R "$search"
-fi
-
-search="$dir/thumb.db"
-if [ -e "$search" ]; then
-	echo "$search;"
-	rm "$search"
-fi
+for t in $target; do
+  search="$dir/$t"
+  if [ -e "$search" ]; then
+    echo "$search"
+    rm -R "$search"
+  fi
+done
 
 old_IFS=$IFS
 IFS=$'\n'
