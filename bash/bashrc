@@ -23,6 +23,7 @@ REPO_GIT="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 #
 
 export EDITOR=vim
+export TERMINAL=urxvtc
 export NBCORECPU=`cat /proc/cpuinfo | grep 'model name' | wc -l`
 export CHROME_BIN="/usr/bin/chromium"
 
