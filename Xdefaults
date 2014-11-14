@@ -41,7 +41,7 @@ URxvt*background: [90]#000000
 *color7: #DCDCDC
 *color15: #FFFFFF
 
-URxvt*.transparent:  true
+URxvt*.transparent: true
 ! URxvt*.shading: 0 to 99 darkens, 101 to 200 lightens
 URxvt*.shading: 15
 

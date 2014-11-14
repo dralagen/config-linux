@@ -24,3 +24,9 @@
 [help]
 	autocorrect = 1
 
+[difftool]
+	prompt = false
+[diff]
+	tool = meld
+[merge]
+	tool = meld
