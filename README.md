@@ -75,6 +75,20 @@ I use git for partage one config for all machine who use git.
 ln -s </my/repo/config-linux>/gitconfig ~/.gitconfig
 ```
 
+i3wm
+----
+
+Add in ~/.xinitrc
+```
+cat $HOME/.i3/config.base \
+    $HOME/.i3/config.$HOSTNAME > $HOME/.i3/config
+exec i3
+```
+
+For have a french keyboard in all session, add in /etc/X11/xinit/xinitrc.d/xinitrc.i3
+```
+setxkbmap fr
+```
 Note
 ----
 
