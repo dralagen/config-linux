@@ -47,5 +47,5 @@ bar {
 exec $HOME/.i3/autostart.stouty.sh
 
 #disable lock
-exec xautostart -disable
+exec xautolock -disable
 
