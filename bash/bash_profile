@@ -11,7 +11,5 @@ then
 	startx
 fi
 
-PATH="$PATH:/home/dralagen/.scripts/"
-
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
