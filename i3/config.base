@@ -9,6 +9,11 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
+# Control
+# Shift
+# Mod4 (Super)
+# Mod1 (Alt)
+
 set $mod Mod4
 
 set $tab1 1:www
@@ -75,6 +80,12 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 5
 bindsym XF86AudioMute         exec amixer set Master toggle
 bindsym XF86AudioRaiseVolume  exec amixer set Master 5%+
 bindsym XF86AudioLowerVolume  exec amixer set Master 5%-
+
+# screenshot
+bindsym Print       exec "$HOME/.i3/screenshot.sh screen"
+bindsym Mod1+Print  exec "$HOME/.i3/screenshot.sh window"
+bindsym Shift+Print exec "$HOME/.i3/screenshot.sh area"
+
 
 # start a terminal
 # bindsym $mod+Return exec i3-sensible-terminal
