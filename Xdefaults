@@ -45,28 +45,30 @@ URxvt*.transparent: true
 ! URxvt*.shading: 0 to 99 darkens, 101 to 200 lightens
 URxvt*.shading: 15
 
-URxvt.perl-ext-common:  default,matcher
-URxvt.url-launcher:     chromium
-URxvt.matcher.button:   3
+URxvt.perl-ext-common:      default,clipboard,url-select,keyboard-select,tabbedex,font-size
+URxvt.url-select.launcher:  chromium
+URxvt.url-select.underline: true
 URxvt.scrollBar: false
 URxvt.savelines:65000
 URxvt.font: xft:Monospace-10
 
-URxvt.keysym.S-Up: \033[1;2A
-URxvt.keysym.S-Down: \033[1;2B
-URxvt.keysym.S-Right: \033[1;2C
-URxvt.keysym.S-Left: \033[1;2D
-URxvt.keysym.S-Home: \033[1;2H
-URxvt.keysym.S-End: \033[1;2F
-URxvt.keysym.C-Up: \033[1;5A
-URxvt.keysym.C-Down: \033[1;5B
-URxvt.keysym.C-Right: \033[1;5C
-URxvt.keysym.C-Left: \033[1;5D
-URxvt.keysym.C-S-Up: \033[1;6A
-URxvt.keysym.C-S-Down: \033[1;6B
-URxvt.keysym.C-S-Right: \033[1;6C
-URXvt.keysym.C-S-Left: \033[1;6D
 
 URxvt.iso14755: false
 URxvt.iso14755_52: false
+
+URxvt.clipboard.autocopy:true
+URxvt.clipboard.copycmd:  xclip -i -selection clipboard
+URxvt.clipboard.pastecmd: xclip -o -selection clipboard
+
+
+! tab
+URxvt.tabbed.new-button: false
+URxvt.tabbed.autohide: true
+URxvt.keysym.Control-t: perl:tabbedex:new_tab
+URxvt.keysym.Control-Tab: perl:tabbedex:next_tab
+URxvt.keysym.Control-Shift-Tab: perl:tabbedex:prev_tab
+
+! font size
+URxvt.keysym.C-Up:     perl:font-size:increase
+URxvt.keysym.C-Down:   perl:font-size:decrease
 

@@ -66,6 +66,8 @@ For install color scheme for URxvt just copy _Xdefaults_ to _~/.Xdefaults_
 ln -s </my/repo/config-linux>/Xdefaults ~/.Xdefaults
 ```
 
+Require : rxvt-unicode urxvt-perls urxvt-font-size urxvt-tabbedex
+
 Git Config
 ----------
 
