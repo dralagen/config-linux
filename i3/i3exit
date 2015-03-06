@@ -1,6 +1,6 @@
 #!/bin/sh
 lock() {
-    xautolock -locknow
+    xautolock -locknow 2 &> /dev/null || true
 }
 
 case "$1" in
