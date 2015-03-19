@@ -20,7 +20,7 @@ for dir in $mnt; do
 		mkdir $basedir/$dir
 	fi
 
-	sudo mount.cifs //192.168.1.1/$dir $basedir/$dir -o username="dralagen",password="${password}",uid=1000,gid=100,rw,iocharset=utf8 && echo "mount $basedir/$dir"
+	sudo mount.cifs //qnapy/$dir $basedir/$dir -o username="dralagen",password="${password}",uid=1000,gid=100,rw,iocharset=utf8 && echo "mount $basedir/$dir"
 
 done
 
