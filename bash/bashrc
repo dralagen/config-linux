@@ -118,3 +118,15 @@ function proxy_off() {
     echo -e "Proxy environment variable removed."
 }
 
+function proxy(){
+	export http_proxy="`~/.scripts/PACreader.py`"
+	export https_proxy=$http_proxy
+	if [ -z "$http_proxy" ]; then
+		sed -i 's/<active>true/<active>false/g' ~/.m2/settings.xml
+	else
+		sed -i 's/<active>false/<active>true/g' ~/.m2/settings.xml
+        sed -i "s/<host>.*<\/host>/<host>`echo $http_proxy | awk -F: '{print $1}'`<\/host>/g" ~/.m2/settings.xml
+        sed -i "s/<port>.*<\/port>/<port>`echo $http_proxy | awk -F: '{print $2}'`<\/port>/g" ~/.m2/settings.xml
+	fi
+}
+
