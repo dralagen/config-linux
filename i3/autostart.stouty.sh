@@ -8,7 +8,7 @@ $HOME/.screenlayout/default.sh
 
 feh --bg-scale $HOME/.background.jpg
 
-($HOME/.scripts/qnapy.sh && clementine)&
+($HOME/.bin/qnapy.sh && clementine)&
 
 exit 0
 
