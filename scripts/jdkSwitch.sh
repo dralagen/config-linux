@@ -5,11 +5,11 @@
 if [ $# -eq 1 ]; then
 	jdk=$1
 else
-echo "usage : . $0 /path/to/java/jdk1.7"
-echo
-echo "shortcup :"
-echo "    . $0 1.7 alias of . $0 /opt/java/jdk1.7"
-echo "    . $0 1.8 alias of . $0 /opt/java/jdk1.8"
+    echo "usage : . $0 /path/to/java/jdk1.7"
+    echo
+    echo "shortcup :"
+    echo "    . $0 1.7 alias of . $0 /opt/java/jdk1.7"
+    echo "    . $0 1.8 alias of . $0 /opt/java/jdk1.8"
 	exit 1
 fi
 
