@@ -12,7 +12,8 @@ if [ ! -d $basedir ] ; then
 	mkdir $basedir
 fi
 
-password="`zenity --password --title="Qnapy's Password"`"
+password="`zenity --password --title="Qnapy's Password"`" || \
+    read -s -p "Qnapy's Password : " password && echo ""
 
 for dir in $mnt; do
 	if [ ! -d $basedir/$dir ] ; then
