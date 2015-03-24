@@ -1,7 +1,5 @@
 #!/bin/sh
 
-start-pulseaudio-x11
-
 numlockx on
 
 $HOME/.screenlayout/default.sh

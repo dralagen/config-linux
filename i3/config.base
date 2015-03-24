@@ -20,7 +20,7 @@ set $tab1 1:www
 set $tab2 2
 set $tab3 3
 set $tab4 4
-set $tab5 5
+set $tab5 5:mail
 set $tab6 6
 set $tab7 7
 set $tab8 8
@@ -69,6 +69,8 @@ focus_follows_mouse no
 workspace_auto_back_and_forth yes
 
 # assign rule
+assign [class="(?i)chromium"] $tab1
+assign [class="(?i)thunderbird"] $tab5
 assign [class="(?i)idea"] $tab11
 assign [class="(?i)clementine"] $tab20
 
