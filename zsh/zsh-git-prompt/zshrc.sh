@@ -21,6 +21,7 @@ add-zsh-hook preexec preexec_update_git_vars
 add-zsh-hook precmd precmd_update_git_vars
 
 ## Function definitions
+
 function preexec_update_git_vars() {
     case "$2" in
         git*|hub*|gh*|stg*)
@@ -62,10 +63,24 @@ function update_current_git_vars() {
 	GIT_STASHED=$__CURRENT_GIT_STATUS[8]
 }
 
+function checkUpstream() {
+  local GIT_PROMPT_FETCH_TIMEOUT=${1-5}
+  local repo=`git rev-parse --show-toplevel 2> /dev/null`
+
+  local FETCH_HEAD="$repo/.git/FETCH_HEAD"
+  # Fech repo if local is stale for more than $GIT_FETCH_TIMEOUT minutes
+  if [[ ! -e "$FETCH_HEAD"  ||  -e `find "$FETCH_HEAD" -mmin +$GIT_PROMPT_FETCH_TIMEOUT` ]]
+  then
+    if [[ -n $(git remote show) ]]; then
+      { git fetch --quiet } &
+    fi
+  fi
+}
 
 zsh_git_status() {
     precmd_update_git_vars
     if [ -n "$__CURRENT_GIT_STATUS" ]; then
+	  checkUpstream
 	  STATUS="$ZSH_THEME_GIT_PROMPT_PREFIX$ZSH_THEME_GIT_PROMPT_BRANCH$GIT_BRANCH %{${reset_color}%}"
 	  if [ "$GIT_BEHIND" -ne "0" ]; then
 		  STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_BEHIND$GIT_BEHIND%{${reset_color}%}"
