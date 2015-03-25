@@ -1,0 +1,35 @@
+#################
+# popular alias #
+#################
+
+alias ls='ls --color=auto'
+alias ll='ls -lhA'
+alias la='ls -A'
+
+alias df='df -H'
+alias du='du -ch'
+
+alias ..='cd ..'
+alias grep='grep --color=auto'
+alias vi='vim'
+
+###############
+#  auto sudo  #
+###############
+
+alias pacman='sudo pacman'
+alias reboot='sudo reboot'
+alias halt='sudo shutdown -h now'
+alias poweroff='sudo shutdown -h now'
+alias systemctl='sudo systemctl'
+alias feg='feh --scale-down'
+
+###########
+#  Autre  #
+###########
+
+alias cpumaxfreq='sudo cpupower frequency-set -u'
+alias cpuinfo='sudo cpupower frequency-info'
+alias xpdf='xpdf -fullscreen'
+alias make="make -j${NBCORECPU}"
+
