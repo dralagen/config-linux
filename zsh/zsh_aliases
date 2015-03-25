@@ -9,7 +9,6 @@ alias la='ls -A'
 alias df='df -H'
 alias du='du -ch'
 
-alias ..='cd ..'
 alias grep='grep --color=auto'
 alias vi='vim'
 
