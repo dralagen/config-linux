@@ -19,7 +19,7 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh_cache
 
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
-zstyle ':completion:*' max-errors 1 not-numeric
+zstyle ':completion:*' max-errors 3 not-numeric
 # Increase the number of errors based on the length of the typed word.
 zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
 
@@ -105,10 +105,6 @@ zstyle ':completion:*:(ssh|scp|rsync):*:hosts-host' ignored-patterns '*.*' loopb
 zstyle ':completion:*:(ssh|scp|rsync):*:hosts-domain' ignored-patterns '<->.<->.<->.<->' '^*.*' '*@*'
 zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^<->.<->.<->.<->' '127.0.0.<->'
 
-# Maven
-fpath=(~/.zsh/zsh-completion $fpath)
-rm -f ~/.zcompdump
-
 zmodload zsh/complist
 setopt extendedglob
 
@@ -143,6 +139,25 @@ unsetopt beep
 bindkey -e
 
 #
+# zsh highlighter
+#
+
+local zsh_highligher="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+if [ -f "$zsh_highligher" ]; then
+  source "$zsh_highligher"
+
+  ZSH_HIGHLIGHT_STYLES[precommand]='fg=green,bold'
+
+  ZSH_HIGHLIGHT_STYLES[path]='fg=blue'
+  ZSH_HIGHLIGHT_STYLES[path_prefix]='none'
+  ZSH_HIGHLIGHT_STYLES[path_approx]='fg=yellow'
+
+  ZSH_HIGHLIGHT_STYLES[globbing]='fg=blue,bold'
+
+fi
+
+#
 # Aliases
 #
 
@@ -170,7 +185,7 @@ export CHROME_BIN="/usr/bin/chromium"
 [[ -f ~/.zsh/zsh-git-prompt/zshrc.sh ]] && . ~/.zsh/zsh-git-prompt/zshrc.sh
 
 set_prompt () {
-    PROMPT="%{$fg[green]%}%n@%M%{$reset_color%}:%{$fg[yellow]%}%~%{$reset_color%}%(!.#.$) "
+    PROMPT="%{$fg[green]%}%n@%M%{$reset_color%}:%{$fg[blue]%}%~%{$reset_color%}%(!.#.$) "
     RPROMPT="$(zsh_git_status)"
 
 }
