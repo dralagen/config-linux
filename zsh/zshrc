@@ -105,6 +105,10 @@ zstyle ':completion:*:(ssh|scp|rsync):*:hosts-host' ignored-patterns '*.*' loopb
 zstyle ':completion:*:(ssh|scp|rsync):*:hosts-domain' ignored-patterns '<->.<->.<->.<->' '^*.*' '*@*'
 zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^<->.<->.<->.<->' '127.0.0.<->'
 
+# Maven
+fpath=(~/.zsh/zsh-completion $fpath)
+rm -f ~/.zcompdump
+
 zmodload zsh/complist
 setopt extendedglob
 
@@ -163,7 +167,7 @@ export CHROME_BIN="/usr/bin/chromium"
 # Prompt
 #
 
-source ~/.zsh/zsh-git-prompt/zshrc.sh
+[[ -f ~/.zsh/zsh-git-prompt/zshrc.sh ]] && . ~/.zsh/zsh-git-prompt/zshrc.sh
 
 set_prompt () {
     PROMPT="%{$fg[green]%}%n@%M%{$reset_color%}:%{$fg[yellow]%}%~%{$reset_color%}%(!.#.$) "
