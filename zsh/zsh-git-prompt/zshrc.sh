@@ -72,7 +72,13 @@ function checkUpstream() {
   if [[ ! -e "$FETCH_HEAD"  ||  -e `find "$FETCH_HEAD" -mmin +$GIT_PROMPT_FETCH_TIMEOUT` ]]
   then
     if [[ -n $(git remote show) ]]; then
-      { git fetch --quiet } &
+   	{
+	  expect -c '
+	  log_user 0
+	  spawn git fetch --quiet
+	  expect -timeout 30 -re "ass(phrase|word)" { exit 1 }
+	  '
+	} &
     fi
   fi
 }
@@ -81,6 +87,7 @@ zsh_git_status() {
     precmd_update_git_vars
     if [ -n "$__CURRENT_GIT_STATUS" ]; then
 	  checkUpstream
+
 	  STATUS="$ZSH_THEME_GIT_PROMPT_PREFIX$ZSH_THEME_GIT_PROMPT_BRANCH$GIT_BRANCH %{${reset_color}%}"
 	  if [ "$GIT_BEHIND" -ne "0" ]; then
 		  STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_BEHIND$GIT_BEHIND%{${reset_color}%}"
