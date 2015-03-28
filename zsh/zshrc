@@ -120,6 +120,9 @@ setopt completeinword
 setopt completealiases
 setopt correctall
 
+# fixes git HEAD^ not found
+unsetopt nomatch
+
 autoload -U colors
 colors
 
