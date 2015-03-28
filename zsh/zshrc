@@ -12,7 +12,7 @@ unsetopt MENU_COMPLETE     # Do not autoselect the first completion entry.
 unsetopt FLOW_CONTROL      # Disable start/stop characters in shell editor.
 
 # Treat these characters as part of a word.
-WORDCHARS='*?_-.[]~&;!#$%^(){}<>'
+# WORDCHARS='*?_-.[]~&;!#$%^(){}<>'
 
 
 zstyle ':completion:*' use-cache on
@@ -182,15 +182,45 @@ export CHROME_BIN="/usr/bin/chromium"
 # Prompt
 #
 
+setopt prompt_subst
+
 [[ -f ~/.zsh/zsh-git-prompt/zshrc.sh ]] && . ~/.zsh/zsh-git-prompt/zshrc.sh
 
-set_prompt () {
-    PROMPT="%{$fg[green]%}%n@%M%{$reset_color%}:%{$fg[blue]%}%~%{$reset_color%}%(!.#.$) "
-    RPROMPT="$(zsh_git_status)"
+PROMPT="%{$fg[green]%}%n@%M%{$reset_color%}:%{$fg[blue]%}%~%{$reset_color%}%(!.#.$) "
+RPROMPT=""
 
+ASYNC_PROC=0
+function precmd() {
+    function async() {
+        # save to temp file
+        printf "%s" "$(zsh_git_status)" > "${HOME}/.zsh_tmp_prompt"
+
+        # signal parent
+        kill -s USR1 $$
+    }
+
+    # do not clear RPROMPT, let it persist
+
+    # kill child if necessary
+    if [[ "${ASYNC_PROC}" != 0 ]]; then
+        kill -s HUP $ASYNC_PROC >/dev/null 2>&1 || :
+    fi
+
+    # start background computation
+    async &!
+    ASYNC_PROC=$!
 }
-autoload add-zsh-hook
-add-zsh-hook precmd set_prompt
+
+function TRAPUSR1() {
+    # read from temp file
+    RPROMPT="$(cat ${HOME}/.zsh_tmp_prompt)"
+
+    # reset proc number
+    ASYNC_PROC=0
+
+    # redisplay
+    zle && zle reset-prompt
+}
 
 
 

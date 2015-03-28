@@ -78,7 +78,7 @@ function checkUpstream() {
 	  spawn git fetch --quiet
 	  expect -timeout 30 -re "ass(phrase|word)" { exit 1 }
 	  '
-	} &
+	}
     fi
   fi
 }
