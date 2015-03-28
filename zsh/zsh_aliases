@@ -16,6 +16,9 @@ alias vi='vim'
 #  auto sudo  #
 ###############
 
+# no correct on sudo
+alias sudo='nocorrect sudo'
+
 alias pacman='sudo pacman'
 alias reboot='sudo reboot'
 alias halt='sudo shutdown -h now'
