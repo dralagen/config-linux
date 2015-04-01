@@ -9,7 +9,6 @@ bar {
     position top
     workspace_buttons yes
 
-
     font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 
     colors {
@@ -23,6 +22,25 @@ bar {
     }
 }
 
+bar {
+    id bar-1
+    output HDMI1
+    tray_output none
+    position top
+    workspace_buttons yes
+
+    font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+
+    colors {
+        background $bg
+        statusline $fg
+
+        focused_workspace  $ac $ac $fg
+        active_workspace   $ac $bg $fg
+        inactive_workspace $bg $bg $fg
+        urgent_workspace   $ur $ur $fg
+    }
+}
 
 exec $HOME/.i3/autostart.slend.sh
 
