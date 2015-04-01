@@ -13,6 +13,8 @@ bar {
     position top
     workspace_buttons yes
 
+    font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+
     colors {
         background $bg
         statusline $ur
