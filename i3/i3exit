@@ -1,20 +1,17 @@
 #!/bin/sh
-lock() {
-    xautolock -locknow || true
-}
 
 case "$1" in
     lock)
-        lock
+        xautolock -locknow
         ;;
     logout)
         i3-msg exit
         ;;
     suspend)
-        lock && sleep 1 && systemctl suspend
+        systemctl suspend
         ;;
     hibernate)
-        lock && sleep 1 && systemctl hibernate
+        systemctl hibernate
         ;;
     reboot)
         systemctl reboot

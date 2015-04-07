@@ -26,6 +26,8 @@ alias poweroff='sudo shutdown -h now'
 alias systemctl='sudo systemctl'
 alias feg='feh --scale-down'
 
+alias gpuoff='sudo gpuoff'
+
 ###########
 #  Autre  #
 ###########
