@@ -77,7 +77,7 @@ function checkUpstream() {
 	  log_user 0
 	  spawn git fetch --quiet
 	  expect -timeout 30 -re "ass(phrase|word)" { exit 1 }
-	  '
+	  ' && update_current_git_vars
 	}
     fi
   fi
