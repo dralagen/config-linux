@@ -56,7 +56,28 @@ ${GIT_PROMPT_SUFFIX}
 ${PROMPT_END}
 ```
 
+ZSH Config
+----------
 
+You can use zsh to replace bash, I use it for better completion and I've installed the same git prompt with async update
+
+Apply the config of bash in your machine :
+```
+ln -s </my/repo/config-linux>/zsh/zshrc ~/.zshrc
+ln -s </my/repo/config-linux>/zsh/zprofile ~/.zprofile
+ln -s </my/repo/config-linux>/zsh/zsh_aliases ~/.zsh_aliases
+ln -s </my/repo/config-linux>/zsh/zsh-git-prompt/ ~/.zsh/zsh-git-prompt 
+```
+
+- ~/.zshrc contain all configuration
+- ~/.zprofile is used when you want to start directly with zsh
+- ~/.zsh_aliases contain some aliases for zsh, contain a lot of same alias define on my bash config
+- ~/.zsh for me contains some add script as git-prompt
+- ~/.zsh/zsh-git-prompt my version of [zsh-git-prompt](https://github.com/olivierverdier/zsh-git-prompt) edited to run a `git fetch` every 5 minutes and use async update and add stash information.
+
+zsh-git-prompt use Python or Haskell
+
+I use [zsh-completion](https://www.archlinux.org/packages/community/any/zsh-completions/) on Archlinux repository
 
 Color scheme
 ------------
