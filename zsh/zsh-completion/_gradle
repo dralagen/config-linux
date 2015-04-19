@@ -1,0 +1,59 @@
+#compdef gradle gradlew
+
+# Android tasks
+androidTasks=(
+'androidDependencies:Displays the Android dependencies of the project'
+'signingReport:Displays the signing info for each variant'
+)
+_describe -t 'androidTasks' "Android tasks" androidTasks
+
+#Build tasks
+buildTasks=(
+'assemble:Assembles all variants of all applications and secondary packages'
+'assembleAndroidTest:Assembles all the Test applications'
+'assembleDebug:Assembles all Debug builds'
+'assembleDebugAndroidTest:Assembles the android (on device) tests for the Debug build'
+'assembleRelease:Assembles all Release builds'
+'build:Assembles and tests this project'
+'buildDependents:Assembles and tests this project and all projects that depend on it'
+'buildNeeded:Assembles and tests this project and all projects it depends on'
+'clean:Deletes the build directory'
+'compileDebugAndroidTestSources'
+'compileDebugSources'
+'compileDebugUnitTestSources'
+'compileReleaseSources'
+'compileReleaseUnitTestSources'
+'mockableAndroidJar:Creates a version of android.jar that'\''s suitable for unit tests'
+)
+_describe -t 'buildTasks' "Android build tasks" buildTasks
+
+#Install tasks
+installTasks=(
+'installDebug:Installs the Debug build'
+'installDebugAndroidTest:Installs the android (on device) tests for the Debug build'
+'uninstallAll:Uninstall all applications'
+'uninstallDebug:Uninstalls the Debug build'
+'uninstallDebugAndroidTest:Uninstalls the android (on device) tests for the Debug build'
+'uninstallRelease:Uninstalls the Release build'
+)
+
+_describe -t 'installTasks' "Android install tasks" installTasks
+
+#Verification tasks
+verifTasks=(
+'check:Runs all checks'
+'connectedAndroidTest:Installs and runs the tests for Debug build on connected devices'
+'connectedCheck:Runs all device checks on currently connected devices'
+'deviceCheck:Runs all device checks using Device Providers and Test Servers'
+'lint:Runs lint on all variants'
+'lintDebug:Runs lint on the Debug build'
+'lintRelease:Runs lint on the Release build'
+'test:Run all unit tests'
+'testDebug:Run unit tests for the Debug build'
+'testRelease:Run unit tests for the Release build'
+)
+_describe -t 'verifTasks' "Android verification tasks" verifTasks
+
+
+return 0
+

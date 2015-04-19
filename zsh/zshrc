@@ -110,6 +110,8 @@ setopt extendedglob
 
 zstyle :compinstall filename '/home/dralagen/.zshrc'
 
+fpath=(~/.zsh/completion $fpath)
+
 autoload -Uz compinit
 compinit
 
