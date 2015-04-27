@@ -195,21 +195,23 @@ PROMPT="%{$fg[green]%}%n@%M%{$reset_color%}:%{$fg[blue]%}%~%{$reset_color%}%(!.#
 RPROMPT=""
 
 ASYNC_PROC=0
+TMP_RPROMPT="/tmp/zsh_tmp_prompt"
 function precmd() {
     function async() {
         # save to temp file
-        printf "%s" "$(zsh_git_status)" > "${HOME}/.zsh_tmp_prompt"
+        printf "%s" "$(zsh_git_status)" > "${TMP_RPROMPT}"
 
         # signal parent
         kill -s USR1 $$
     }
 
-    # do not clear RPROMPT, let it persist
-
     # kill child if necessary
     if [[ "${ASYNC_PROC}" != 0 ]]; then
         kill -s HUP $ASYNC_PROC >/dev/null 2>&1 || :
     fi
+
+    # clean RPROMPT
+    RPROMPT=""
 
     # start background computation
     async &!
@@ -218,7 +220,12 @@ function precmd() {
 
 function TRAPUSR1() {
     # read from temp file
-    RPROMPT="$(cat ${HOME}/.zsh_tmp_prompt)"
+    if [ -f "${TMP_RPROMPT}" ]; then
+        RPROMPT="$(cat ${TMP_RPROMPT})"
+        rm "${TMP_RPROMPT}"
+    else
+        RPROMPT=""
+    fi
 
     # reset proc number
     ASYNC_PROC=0
@@ -226,7 +233,6 @@ function TRAPUSR1() {
     # redisplay
     zle && zle reset-prompt
 }
-
 
 
 #
