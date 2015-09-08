@@ -5,7 +5,7 @@ basedir="/home/dralagen/qnapy"
 if [ $# -gt 0 ]; then
 	mnt="$1"
 else
-	mnt="Multimedia home Private Download photo_famille"
+	mnt="Multimedia home Private Download"
 fi
 
 if [ ! -d $basedir ] ; then
