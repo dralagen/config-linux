@@ -121,12 +121,12 @@ zstyle ':completion:*:*:mvn:*:warnings' format $'\e[1m -- No matches found --\e[
 zmodload zsh/complist
 setopt extendedglob
 
-zstyle :compinstall filename '/home/dralagen/.zshrc'
+zstyle :compinstall filename '~/.zshrc'
 
 fpath=(~/.zsh/completion $fpath)
 
 autoload -Uz compinit
-compinit
+compinit -u
 
 autoload -U bashcompinit
 bashcompinit
@@ -204,7 +204,7 @@ setopt prompt_subst
 
 [[ -f ~/.zsh/zsh-git-prompt/zshrc.sh ]] && . ~/.zsh/zsh-git-prompt/zshrc.sh
 
-PROMPT="%{$fg[green]%}%n@%M%{$reset_color%}:%{$fg[blue]%}%~%{$reset_color%}%(!.#.$) "
+PROMPT="%{%(!.$fg[red].$fg[green])%}%n@%M%{$reset_color%}:%{$fg[blue]%}%~%{$reset_color%}%(!.#.$) "
 RPROMPT=""
 
 ASYNC_PROC=0
