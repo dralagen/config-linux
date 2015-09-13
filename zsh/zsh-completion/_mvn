@@ -1,0 +1,25 @@
+#compdef mvn
+
+# Appengine Tasks
+appengineTasks=(
+'assemble:Assembles all variants of all applications and secondary packages'
+'assembleAndroidTest:Assembles all the Test applications'
+'assembleDebug:Assembles all Debug builds'
+'assembleDebugAndroidTest:Assembles the android (on device) tests for the Debug build'
+'assembleRelease:Assembles all Release builds'
+'build:Assembles and tests this project'
+'buildDependents:Assembles and tests this project and all projects that depend on it'
+'buildNeeded:Assembles and tests this project and all projects it depends on'
+'clean:Deletes the build directory'
+'compileDebugAndroidTestSources'
+'compileDebugSources'
+'compileDebugUnitTestSources'
+'compileReleaseSources'
+'compileReleaseUnitTestSources'
+'mockableAndroidJar:Creates a version of android.jar that'\''s suitable for unit tests'
+)
+_describe -t 'appengineTasks' "Appengine tasks" appengineTasks
+
+
+return 0
+
