@@ -175,6 +175,8 @@ if [ -f "$zsh_highligher" ]; then
 
 fi
 
+[[ -f ~/.dircolors ]] && export LS_COLORS="$HOME/.dircolors" && eval `dircolors $LS_COLORS`
+
 #
 # Aliases
 #
