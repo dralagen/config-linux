@@ -34,14 +34,33 @@ cpu_avg_samples 2
 # Stuff after 'TEXT' will be formatted on screen
 TEXT
 
-[{"full_text":"Uptime: ${uptime_short}","color":"\#B80000"},
-{"full_text":"CPU: ${cpu}%","color":"\#EB1700"},
-{"full_text":"GPU: ${exec cat /proc/acpi/bbswitch | awk -F' ' '{print $2}'}", "color":"\#EB5D00"},
-{"full_text":"RAM: ${mem}/${memmax} ${memperc}%","color":"\#CCAA00"},
-{"full_text":"Down/UP: ${if_up eth0}${downspeed eth0} (${totaldown eth0}) / ${upspeed eth0} (${totalup eth0})${else}${if_up wlan0}${downspeed wlan0} (${totaldown wlan0}) / ${upspeed wlan0} (${totalup wlan0})${else}- / -${endif}${endif}","color":"\#CCCC42"},
-{"full_text":"${if_up tun0}VPN:${downspeed tun0} (${totaldown tun0}) / ${upspeed tun0} (${totalup tun0})${endif}","color":"\#CCCC42"},
-{"full_text":"${if_empty ${battery}}${else}Battery: ${battery} ${exec upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep "time to" | awk '{print $4 $5}'}${endif}","color":"\#BDE077"},
-{"full_text":"Volume: ${if_empty ${exec amixer get Master | grep "Front Left:" | awk '{print $6}' | grep -oE "on"}}Ø${else}${exec amixer get Master | grep "Front Left: " | awk '{print $5}' | grep -oE "[[:digit:]]{1,}%"}${endif}","color":"\#A6E0A6"},
+[{"name":"uptime", "icon":"/home/dralagen/.i3/icons/arch_10x10.xbm", "full_text":"${uptime_short}","icon_color":"\#B80000","color":"\#B80000"},
+{"name":"cpu", "icon":"/home/dralagen/.i3/icons/cpu.xbm", "icon_color":"\#EB1700", "full_text":"${cpu}%","color":"\#EB1700"},
+{"name":"gpu", "icon":"/home/dralagen/.i3/icons/ac.xbm", "full_text":"${exec cat /proc/acpi/bbswitch | awk -F' ' '{print $2}'}", "icon_color":"\#EB5D00", "color":"\#EB5D00"},
+{"name": "memory", "icon": "/home/dralagen/.i3/icons/mem.xbm", "icon_color":"\#CCAA00", "full_text":"${mem}/${memmax} ${memperc}%","color":"\#CCAA00"},
+${if_up wlan0} \
+   {"name":"download", "icon":"/home/dralagen/.i3/icons/net_down_03.xbm", \
+	"icon_color":"\#CCCC42","color":"\#CCCC42", "full_text": "${downspeed wlan0}"}, \
+   {"name":"upload", "icon":"/home/dralagen/.i3/icons/net_up_03.xbm", \
+	"icon_color":"\#CCCC42","color":"\#CCCC42", "full_text": "${upspeed wlan0}"}, \
+${else} ${if_up eth0}\
+  {"name":"download", "icon":"/home/dralagen/.i3/icons/net_down_03.xbm", \
+	"icon_color":"\#CCCC42","color":"\#CCCC42", "full_text": "${downspeed eth0}"}, \
+  {"name":"upload", "icon":"/home/dralagen/.i3/icons/net_up_03.xbm", \
+	"icon_color":"\#CCCC42","color":"\#CCCC42", "full_text": "${upspeed eth0}"}, \
+  ${else}
+    {"name":"nonet", "icon_color": "\#CCCC42", "full_text": "", "icon": "/home/dralagen/.i3/icons/net_down_01.xbm"}, \
+  ${endif}\
+${endif}\
+ ${if_empty ${battery BAT1} } ${else}\
+   {"name": "battery", "icon":"/home/dralagen/.i3/icons/bat_full_01.xbm", \
+    "icon_color":"\#BDE077", "color": "\#BDE077", "full_text": "${battery} ${exec upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep "time to" | awk '{print $4 $5}'}"},  \
+${endif}\
+${if_empty ${exec amixer get Master | grep "Front Left:" | awk '{print $6}' | grep -oE "on"}} \
+	{"name":"volume", "icon":"/home/dralagen/.i3/icons/spkr_02.xbm", "icon_color":"\#A6E0A6", "full_text":""},\
+ ${else}\
+{"name":"volume", "icon":"/home/dralagen/.i3/icons/spkr_01.xbm", "full_text":"${exec amixer get Master | grep "Front Left: " | awk '{print $5}' | grep -oE "[[:digit:]]{1,}%"}","icon_color":"\#A6E0A6", "color":"\#A6E0A6"},\
+${endif}\
 {"full_text":"${time %a %b %d %H:%M}","color":"\#CEDCE0"}
 ],
 

@@ -4,6 +4,7 @@ bar {
     id bar-0
     output eDP1
     tray_output eDP1
+    i3bar_command  /usr/bin/i3bar-icons
 #status_command i3status
     status_command /home/dralagen/.i3/conky-i3bar
     position top
