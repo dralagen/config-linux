@@ -10,7 +10,7 @@ feh --bg-scale $HOME/.background.jpg
 
 ($HOME/.bin/qnapy.sh && clementine)&
 
-chromium &
+firefox &
 thunderbird &
 
 exit 0
