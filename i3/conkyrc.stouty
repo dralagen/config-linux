@@ -35,10 +35,25 @@ cpu_avg_samples 2
 TEXT
 
 [
-{"full_text":"Uptime: ${uptime_short} ","color":"\#BDE077"},
-{"full_text":" CPU: ${cpu}% ","color":"\#FDA53C"},
-{"full_text":" RAM: ${mem}/${memmax} ${memperc}% ","color":"\#CCAA00"},
-{"full_text":" Down/UP: ${if_up enp5s0}${downspeed enp5s0} (${totaldown enp5s0}) / ${upspeed enp5s0} (${totalup enp5s0})${else}- / -${endif} ","color":"\#E8DD9E"},
+{"name":"uptime", "icon":"/home/dralagen/.i3/icons/arch_10x10.xbm",\
+   	"full_text":"${uptime_short}",\
+	"icon_color":"\#BDE077","color":"\#BDE077"},\
+{"name":"cpu", "icon":"/home/dralagen/.i3/icons/cpu.xbm",\
+	"full_text":"${cpu}%",\
+	"icon_color":"\#FDA53C","color":"\#FDA53C"},\
+{"name": "memory", "icon": "/home/dralagen/.i3/icons/mem.xbm",\
+	"full_text":"${mem}/${memmax} ${memperc}%",\
+	"icon_color":"\#CCAA00","color":"\#CCAA00"},\
+${if_up enp5s0}\
+	{"name":"download", "icon":"/home/dralagen/.i3/icons/net_down_03.xbm",\
+		"full_text": "${downspeed enp5s0}",\
+		"icon_color":"\#E8DD9E","color":"\#E8DD9E"},\
+    {"name":"upload", "icon":"/home/dralagen/.i3/icons/net_up_03.xbm",\
+		"full_text": "${upspeed enp5s0}",\
+		"icon_color":"\#E8DD9E","color":"\#E8DD9E"},\
+${else}\
+	{"name":"nonet", "icon_color": "\#E8DD9E", "full_text": "", "icon": "/home/dralagen/.i3/icons/net_down_01.xbm"},\
+${endif}\
 {"full_text":" ${time %A %d %B %H:%M} ","color":"\#CCCCCC"}
 ],
 
