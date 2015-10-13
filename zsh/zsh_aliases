@@ -39,4 +39,5 @@ alias make="make -j${NBCORECPU}"
 alias impressive='impressive -t CrossFade -T 300'
 
 alias pdflatex='pdflatex `[[ -d ./build ]] && echo "-output-directory=build"` -file-line-error'
+alias xelatex='xelatex `[[ -d ./build ]] && echo "-output-directory=build"` -file-line-error'
 
