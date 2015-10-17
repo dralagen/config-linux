@@ -26,7 +26,7 @@ set $tab7 7
 set $tab8 8
 set $tab9 9
 set $tab10 10
-set $tab11 11:intellij
+set $tab11 11:code
 set $tab12 12
 set $tab13 13
 set $tab14 14
