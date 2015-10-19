@@ -46,7 +46,7 @@ URxvt*.transparent: true
 URxvt*.shading: 15
 
 URxvt.perl-ext-common:      default,clipboard,url-select,keyboard-select,tabbedex,font-size
-URxvt.url-select.launcher:  firefox
+URxvt.url-select.launcher:  chromium
 URxvt.url-select.underline: true
 URxvt.scrollBar: false
 URxvt.savelines:65000
