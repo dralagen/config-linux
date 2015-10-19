@@ -46,10 +46,10 @@ TEXT
 	"icon_color":"\#CCAA00","color":"\#CCAA00"},\
 ${if_up enp5s0}\
 	{"name":"download", "icon":"/home/dralagen/.i3/icons/net_down_03.xbm",\
-		"full_text": "${downspeed enp5s0}",\
+		"full_text": "${downspeed enp5s0} - ${totaldown enp5s0}",\
 		"icon_color":"\#E8DD9E","color":"\#E8DD9E"},\
     {"name":"upload", "icon":"/home/dralagen/.i3/icons/net_up_03.xbm",\
-		"full_text": "${upspeed enp5s0}",\
+		"full_text": "${upspeed enp5s0} - ${totalup enp5s0}",\
 		"icon_color":"\#E8DD9E","color":"\#E8DD9E"},\
 ${else}\
 	{"name":"nonet", "icon_color": "\#E8DD9E", "full_text": "", "icon": "/home/dralagen/.i3/icons/net_down_01.xbm"},\
