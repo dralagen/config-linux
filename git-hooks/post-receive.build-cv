@@ -28,7 +28,7 @@
 # --- Config
 srvsrc="/tmp/srv/"
 
-function build() {
+build() {
 tmpdir="`mktemp -d`"
 
 outputdir="${srvsrc}/${short_refname}"
@@ -57,7 +57,7 @@ xelatex -interaction nonstopmode cv.tex > /dev/null \
 	rm -rf "$tmpdir"
 }
 
-function apply() {
+apply() {
 
 # --- Check types
 # if $newrev is 0000...0000, it's a commit to delete a ref.
@@ -78,7 +78,7 @@ case "$refname","$newrev_type" in
 	refs/tags/*,delete)
 		# delete tag
 		short_refname=${refname##refs/tags/}
-		echo ${short_refname}
+		rm -rf "${srvsrc}/${short_refname}"
 		;;
 	refs/tags/*,tag)
 		# annotated tag
@@ -93,6 +93,7 @@ case "$refname","$newrev_type" in
 	refs/heads/*,delete)
 		# delete branch
 		short_refname=${refname##refs/heads/}
+		rm -rf "${srvsrc}/${short_refname}"
 		;;
 esac
 }
