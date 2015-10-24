@@ -13,5 +13,7 @@ feh --bg-scale $HOME/.background.jpg
 chromium &
 thunderbird &
 
+~/.scripts/lightsOn.sh &
+
 exit 0
 
