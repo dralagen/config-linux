@@ -41,3 +41,13 @@ alias impressive='impressive -t CrossFade -T 300'
 alias pdflatex='pdflatex `[[ -d ./build ]] && echo "-output-directory=build"` -file-line-error'
 alias xelatex='xelatex `[[ -d ./build ]] && echo "-output-directory=build"` -file-line-error'
 
+
+#########
+# nohup #
+#########
+
+function nohup() {
+	/bin/nohup $@ >/dev/null 2>&1 &
+
+}
+
