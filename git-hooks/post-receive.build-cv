@@ -1,0 +1,123 @@
+#!/bin/sh
+#
+# An example hook script to blocks unannotated tags from entering.
+# Called by "git receive-pack" with arguments: refname sha1-old sha1-new
+#
+# To enable this hook, rename this file to "update".
+#
+# Config
+# ------
+# hooks.allowunannotated
+#   This boolean sets whether unannotated tags will be allowed into the
+#   repository.  By default they won't be.
+# hooks.allowdeletetag
+#   This boolean sets whether deleting tags will be allowed in the
+#   repository.  By default they won't be.
+# hooks.allowmodifytag
+#   This boolean sets whether a tag may be modified after creation. By default
+#   it won't be.
+# hooks.allowdeletebranch
+#   This boolean sets whether deleting branches will be allowed in the
+#   repository.  By default they won't be.
+# hooks.denycreatebranch
+#   This boolean sets whether remotely creating branches will be denied
+#   in the repository.  By default this is allowed.
+#
+
+
+# --- Config
+srvsrc="/tmp/srv/"
+
+function build() {
+tmpdir="`mktemp -d`"
+
+outputdir="${srvsrc}/${short_refname}"
+mkdir -p "${outputdir}"
+outputname="cv_adrienGarandel"
+
+git clone $GIT_DIR -b ${short_refname} ${tmpdir}
+
+cd "${tmpdir}"
+
+sed -i "s/,print,/,/" cv.tex
+sed -i "s/\(\[print\]\)\|\(,\?print,\?\)//" cv.tex
+
+xelatex -interaction nonstopmode cv.tex > /dev/null \
+	&& xelatex -interaction nonstopmode cv.tex > /dev/null \
+	&& cp cv.pdf "${outputdir}/${outputname}.pdf" \
+	&& echo "create pdf ${short_refname}/${outputname}.pdf"
+
+sed -i "s/\\documentclass\[/\\documentclass\[print,/" cv.tex
+sed -i "s/\\documentclass{/\\documentclass\[print\]{/" cv.tex
+
+xelatex -interaction nonstopmode cv.tex > /dev/null \
+	&& cp cv.pdf "${outputdir}/${outputname}_print.pdf" \
+	&& echo "create pdf ${short_refname}/${outputname}_print.pdf"
+
+	rm -rf "$tmpdir"
+}
+
+function apply() {
+
+# --- Check types
+# if $newrev is 0000...0000, it's a commit to delete a ref.
+zero="0000000000000000000000000000000000000000"
+if [ "$newrev" = "$zero" ]; then
+	newrev_type=delete
+else
+	newrev_type=$(git cat-file -t $newrev)
+fi
+
+case "$refname","$newrev_type" in
+	refs/tags/*,commit)
+		# un-annotated tag
+		short_refname=${refname##refs/tags/}
+		echo ${short_refname}
+		build
+		;;
+	refs/tags/*,delete)
+		# delete tag
+		short_refname=${refname##refs/tags/}
+		echo ${short_refname}
+		;;
+	refs/tags/*,tag)
+		# annotated tag
+		short_refname=${refname##refs/tags/}
+		build
+		;;
+	refs/heads/*,commit)
+		# branch
+		short_refname=${refname##refs/heads/}
+		build
+		;;
+	refs/heads/*,delete)
+		# delete branch
+		short_refname=${refname##refs/heads/}
+		;;
+esac
+}
+
+
+# --- Main loop
+# Allow dual mode: run from the command line just like the update hook, or
+# if no arguments are given then run as a hook script
+if [ -n "$1" -a -n "$2" -a -n "$3" ]; then
+	# Output to the terminal in command line mode - if someone wanted to
+	# resend an email; they could redirect the output to sendmail
+	# themselves
+	oldrev="$1"
+	newrev="$2"
+	refname="$3"
+	apply
+else
+	repositoryDirectory="`(cd $GIT_DIR && pwd)`"
+	while read oldrev newrev refname
+	do
+		cd "${repositoryDirectory}"
+		apply
+	done
+fi
+
+# --- Finished
+exit 0
+
