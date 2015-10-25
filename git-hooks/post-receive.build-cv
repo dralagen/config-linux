@@ -16,7 +16,7 @@ build() {
 	mkdir -p "${outputdir}"
 	outputname="cv_adrienGarandel"
 
-	git clone $GIT_DIR -b ${short_refname} ${tmpdir}
+	git clone $GIT_DIR -b ${short_refname} ${tmpdir} > /dev/null 2>&1 && echo "Launch latex build"
 
 	cd "${tmpdir}"
 
@@ -25,29 +25,32 @@ build() {
 	sed -i "s/,print,/,/" cv.tex
 	sed -i "s/\(\[print\]\)\|\(,\?print,\?\)//" cv.tex
 
+	echo "Build pdf ${outputsrv}"
 	xelatex -interaction nonstopmode cv.tex > /dev/null \
 		&& xelatex -interaction nonstopmode cv.tex > /dev/null \
 		&& cp cv.pdf "${srvsrc}/${outputsrv}" \
-		&& echo "create pdf ${outputsrv}"
+		&& echo "Build success"
 
 	sed -i "s/\\documentclass\[/\\documentclass\[print,/" cv.tex
 	sed -i "s/\\documentclass{/\\documentclass\[print\]{/" cv.tex
 
 	outputsrv="${outputdir}/${outputname}_print.pdf"
 
+	echo "Build pdf ${outputsrv}"
 	xelatex -interaction nonstopmode cv.tex > /dev/null \
 		&& cp cv.pdf "${srvsrc}/${outputsrv}" \
-		&& echo "create pdf ${outputsrv}"
+		&& echo "Build success"
 
 	for letter in "`grep documentclass -H *.tex | awk -F: '{print $1}' | grep -v cv.tex`"; do
 
 		letterbuild="`sed "s/\.tex$/.pdf/" <<< ${letter}`"
 		outputsrv="${outputdir}/${letterbuild}"
 
+		echo "Build pdf ${outputsrv}"
 		xelatex -interaction nonstopmode "${letter}" > /dev/null \
 			&& xelatex -interaction nonstopmode ${letter} > /dev/null \
 			&& cp "${letterbuild}" "${srvsrc}/${outputsrv}" \
-			&& echo "create pdf ${outputsrv}"
+			&& echo "Build success"
 
 	done
 
