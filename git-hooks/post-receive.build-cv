@@ -29,73 +29,88 @@
 srvsrc="/tmp/srv/"
 
 build() {
-tmpdir="`mktemp -d`"
+	tmpdir="`mktemp -d`"
 
-outputdir="${srvsrc}/${short_refname}"
-mkdir -p "${outputdir}"
-outputname="cv_adrienGarandel"
+	outputdir="${srvsrc}/${short_refname}"
+	mkdir -p "${outputdir}"
+	outputname="cv_adrienGarandel"
 
-git clone $GIT_DIR -b ${short_refname} ${tmpdir}
+	git clone $GIT_DIR -b ${short_refname} ${tmpdir}
 
-cd "${tmpdir}"
+	cd "${tmpdir}"
 
-sed -i "s/,print,/,/" cv.tex
-sed -i "s/\(\[print\]\)\|\(,\?print,\?\)//" cv.tex
+	outputsrv="${outputdir}/${outputname}.pdf"
 
-xelatex -interaction nonstopmode cv.tex > /dev/null \
-	&& xelatex -interaction nonstopmode cv.tex > /dev/null \
-	&& cp cv.pdf "${outputdir}/${outputname}.pdf" \
-	&& echo "create pdf ${short_refname}/${outputname}.pdf"
+	sed -i "s/,print,/,/" cv.tex
+	sed -i "s/\(\[print\]\)\|\(,\?print,\?\)//" cv.tex
 
-sed -i "s/\\documentclass\[/\\documentclass\[print,/" cv.tex
-sed -i "s/\\documentclass{/\\documentclass\[print\]{/" cv.tex
+	xelatex -interaction nonstopmode cv.tex > /dev/null \
+		&& xelatex -interaction nonstopmode cv.tex > /dev/null \
+		&& cp cv.pdf "${outputsrv}" \
+		&& echo "create pdf ${outputsrv}"
 
-xelatex -interaction nonstopmode cv.tex > /dev/null \
-	&& cp cv.pdf "${outputdir}/${outputname}_print.pdf" \
-	&& echo "create pdf ${short_refname}/${outputname}_print.pdf"
+	sed -i "s/\\documentclass\[/\\documentclass\[print,/" cv.tex
+	sed -i "s/\\documentclass{/\\documentclass\[print\]{/" cv.tex
+
+	outputsrv="${outputdir}/${outputname}_print.pdf"
+
+	xelatex -interaction nonstopmode cv.tex > /dev/null \
+		&& cp cv.pdf "${outputsrv}" \
+		&& echo "create pdf ${outputsrv}"
+
+	for letter in "`grep documentclass -H *.tex | awk -F: '{print $1}' | grep -v cv.tex`"; do
+
+		outputsrv="${outputdir}/`sed "s/\.tex$/.pdf/" <<< ${letter}`"
+
+		xelatex -interaction nonstopmode "${letter}" > /dev/null \
+			&& xelatex -interaction nonstopmode ${letter} > /dev/null \
+			&& cp "${letter}" "${outputsrv}" \
+			&& echo "create pdf ${outputsrv}"
+
+	done
 
 	rm -rf "$tmpdir"
 }
 
 apply() {
 
-# --- Check types
-# if $newrev is 0000...0000, it's a commit to delete a ref.
-zero="0000000000000000000000000000000000000000"
-if [ "$newrev" = "$zero" ]; then
-	newrev_type=delete
-else
-	newrev_type=$(git cat-file -t $newrev)
-fi
+	# --- Check types
+	# if $newrev is 0000...0000, it's a commit to delete a ref.
+	zero="0000000000000000000000000000000000000000"
+	if [ "$newrev" = "$zero" ]; then
+		newrev_type=delete
+	else
+		newrev_type=$(git cat-file -t $newrev)
+	fi
 
-case "$refname","$newrev_type" in
-	refs/tags/*,commit)
-		# un-annotated tag
-		short_refname=${refname##refs/tags/}
-		echo ${short_refname}
-		build
-		;;
-	refs/tags/*,delete)
-		# delete tag
-		short_refname=${refname##refs/tags/}
-		rm -rf "${srvsrc}/${short_refname}"
-		;;
-	refs/tags/*,tag)
-		# annotated tag
-		short_refname=${refname##refs/tags/}
-		build
-		;;
-	refs/heads/*,commit)
-		# branch
-		short_refname=${refname##refs/heads/}
-		build
-		;;
-	refs/heads/*,delete)
-		# delete branch
-		short_refname=${refname##refs/heads/}
-		rm -rf "${srvsrc}/${short_refname}"
-		;;
-esac
+	case "$refname","$newrev_type" in
+		refs/tags/*,commit)
+			# un-annotated tag
+			short_refname=${refname##refs/tags/}
+			echo ${short_refname}
+			build
+			;;
+		refs/tags/*,delete)
+			# delete tag
+			short_refname=${refname##refs/tags/}
+			rm -rf "${srvsrc}/${short_refname}"
+			;;
+		refs/tags/*,tag)
+			# annotated tag
+			short_refname=${refname##refs/tags/}
+			build
+			;;
+		refs/heads/*,commit)
+			# branch
+			short_refname=${refname##refs/heads/}
+			build
+			;;
+		refs/heads/*,delete)
+			# delete branch
+			short_refname=${refname##refs/heads/}
+			rm -rf "${srvsrc}/${short_refname}"
+			;;
+	esac
 }
 
 
