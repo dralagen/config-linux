@@ -41,7 +41,10 @@ build() {
 		&& cp cv.pdf "${srvsrc}/${outputsrv}" \
 		&& echo "Build success" || echo "Build fail"
 
-	for letter in "`grep documentclass -H *.tex | awk -F: '{print $1}' | grep -v cv.tex`"; do
+	grep documentclass -H *.tex \
+		| awk -F: '{print $1}' | grep -v cv.tex \
+		| while read letter
+	do
 
 		letterbuild="`sed "s/\.tex$/.pdf/" <<< ${letter}`"
 		outputsrv="${outputdir}/${letterbuild}"
