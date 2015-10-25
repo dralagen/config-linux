@@ -12,7 +12,7 @@ srvsrc="/tmp/srv/"
 build() {
 	tmpdir="`mktemp -d`"
 
-	outputdir="${srvsrc}/${short_refname}"
+	outputdir="${short_refname}"
 	mkdir -p "${outputdir}"
 	outputname="cv_adrienGarandel"
 
@@ -27,7 +27,7 @@ build() {
 
 	xelatex -interaction nonstopmode cv.tex > /dev/null \
 		&& xelatex -interaction nonstopmode cv.tex > /dev/null \
-		&& cp cv.pdf "${outputsrv}" \
+		&& cp cv.pdf "${srvsrc}/${outputsrv}" \
 		&& echo "create pdf ${outputsrv}"
 
 	sed -i "s/\\documentclass\[/\\documentclass\[print,/" cv.tex
@@ -36,16 +36,17 @@ build() {
 	outputsrv="${outputdir}/${outputname}_print.pdf"
 
 	xelatex -interaction nonstopmode cv.tex > /dev/null \
-		&& cp cv.pdf "${outputsrv}" \
+		&& cp cv.pdf "${srvsrc}/${outputsrv}" \
 		&& echo "create pdf ${outputsrv}"
 
 	for letter in "`grep documentclass -H *.tex | awk -F: '{print $1}' | grep -v cv.tex`"; do
 
-		outputsrv="${outputdir}/`sed "s/\.tex$/.pdf/" <<< ${letter}`"
+		letterbuild="`sed "s/\.tex$/.pdf/" <<< ${letter}`"
+		outputsrv="${outputdir}/${letterbuild}"
 
 		xelatex -interaction nonstopmode "${letter}" > /dev/null \
 			&& xelatex -interaction nonstopmode ${letter} > /dev/null \
-			&& cp "${letter}" "${outputsrv}" \
+			&& cp "${letterbuild}" "${srvsrc}/${outputsrv}" \
 			&& echo "create pdf ${outputsrv}"
 
 	done
