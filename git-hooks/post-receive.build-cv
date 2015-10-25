@@ -13,7 +13,7 @@ build() {
 	tmpdir="`mktemp -d`"
 
 	outputdir="${short_refname}"
-	mkdir -p "${outputdir}"
+	mkdir -p "${srvsrc}/${outputdir}"
 	outputname="cv_adrienGarandel"
 
 	git clone $GIT_DIR -b ${short_refname} ${tmpdir} > /dev/null 2>&1 && echo "Launch latex build"
@@ -29,7 +29,7 @@ build() {
 	xelatex -interaction nonstopmode cv.tex > /dev/null \
 		&& xelatex -interaction nonstopmode cv.tex > /dev/null \
 		&& cp cv.pdf "${srvsrc}/${outputsrv}" \
-		&& echo "Build success"
+		&& echo "Build success" || echo "Build fail"
 
 	sed -i "s/\\documentclass\[/\\documentclass\[print,/" cv.tex
 	sed -i "s/\\documentclass{/\\documentclass\[print\]{/" cv.tex
@@ -39,7 +39,7 @@ build() {
 	echo "Build pdf ${outputsrv}"
 	xelatex -interaction nonstopmode cv.tex > /dev/null \
 		&& cp cv.pdf "${srvsrc}/${outputsrv}" \
-		&& echo "Build success"
+		&& echo "Build success" || echo "Build fail"
 
 	for letter in "`grep documentclass -H *.tex | awk -F: '{print $1}' | grep -v cv.tex`"; do
 
@@ -50,7 +50,7 @@ build() {
 		xelatex -interaction nonstopmode "${letter}" > /dev/null \
 			&& xelatex -interaction nonstopmode ${letter} > /dev/null \
 			&& cp "${letterbuild}" "${srvsrc}/${outputsrv}" \
-			&& echo "Build success"
+			&& echo "Build success" || echo "Build fail"
 
 	done
 
