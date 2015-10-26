@@ -50,8 +50,8 @@ build() {
 		outputsrv="${outputdir}/${letterbuild}"
 
 		echo "Build pdf ${outputsrv}"
-		xelatex -interaction nonstopmode "${letter}" > /dev/null \
-			&& xelatex -interaction nonstopmode ${letter} > /dev/null \
+		pdflatex -interaction nonstopmode "${letter}" > /dev/null \
+			&& pdflatex -interaction nonstopmode ${letter} > /dev/null \
 			&& cp "${letterbuild}" "${srvsrc}/${outputsrv}" \
 			&& echo "Build success" || echo "Build fail"
 
