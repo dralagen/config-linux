@@ -85,10 +85,9 @@ bindsym XF86AudioRaiseVolume  exec amixer set Master 5%+
 bindsym XF86AudioLowerVolume  exec amixer set Master 5%-
 
 # screenshot
-bindsym Print       exec "$HOME/.i3/screenshot.sh screen"
-bindsym Mod1+Print  exec "$HOME/.i3/screenshot.sh window"
-bindsym Shift+Print exec "$HOME/.i3/screenshot.sh area"
-
+bindsym --release Print          exec --no-startup-id "$HOME/.i3/screenshot.sh screen"
+bindsym --release Control+Print  exec --no-startup-id "$HOME/.i3/screenshot.sh window"
+bindsym --release Shift+Print    exec --no-startup-id "$HOME/.i3/screenshot.sh area"
 
 # start a terminal
 # bindsym $mod+Return exec i3-sensible-terminal
