@@ -203,6 +203,7 @@ export EDITOR=vim
 export TERMINAL=urxvtc
 export NBCORECPU=`cat /proc/cpuinfo | grep 'model name' | wc -l`
 export CHROME_BIN="/usr/bin/chromium"
+export PATH="$PATH:/home/dralagen/.gem/ruby/2.2.0/bin"
 
 # eclipse use GTK 2
 export SWT_GTK3=0
