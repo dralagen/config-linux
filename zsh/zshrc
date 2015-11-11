@@ -304,3 +304,6 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
     zle -N zle-line-finish
 fi
 
+
+# added by travis gem
+[ -f /home/dralagen/.travis/travis.sh ] && source /home/dralagen/.travis/travis.sh

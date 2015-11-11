@@ -130,3 +130,6 @@ function proxy(){
 	fi
 }
 
+
+# added by travis gem
+[ -f /home/dralagen/.travis/travis.sh ] && source /home/dralagen/.travis/travis.sh
