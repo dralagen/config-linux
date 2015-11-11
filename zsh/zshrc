@@ -204,6 +204,9 @@ export TERMINAL=urxvtc
 export NBCORECPU=`cat /proc/cpuinfo | grep 'model name' | wc -l`
 export CHROME_BIN="/usr/bin/chromium"
 
+# eclipse use GTK 2
+export SWT_GTK3=0
+
 #
 # Prompt
 #
