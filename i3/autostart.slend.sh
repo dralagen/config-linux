@@ -11,6 +11,7 @@ feh --bg-center $HOME/.background.png
 sudo gopenvpn &
 
 /home/dralagen/.i3/notifyBattery.sh &
+~/.scripts/lightsOn.sh &
 
 exit 0
 
