@@ -23,12 +23,29 @@ REPO_GIT="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 #
 
 export EDITOR=vim
-export TERMINAL=urxvtc
 export NBCORECPU=`cat /proc/cpuinfo | grep 'model name' | wc -l`
-export CHROME_BIN="/usr/bin/chromium"
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
 
 # PS1
 ResetColor="\[\033[0m\]"
@@ -37,22 +54,8 @@ Yellow="\[\033[0;33m\]"
 
 PS1="${IntenseBlack}\u@\h${ResetColor}:${Yellow}\w${ResetColor}$ "
 
-# merge color if the first X console
-if [[ $(tty) = /dev/pts/0 ]]; then
-    xrdb -merge ~/.Xdefaults
-fi
-
 # auto cd when juste path
 shopt -s autocd
-
-################
-#  git prompt  #
-################
-
-export GIT_PROMPT_ONLY_IN_REPO=1
-export GIT_PROMPT_FETCH_REMOTE_STATUS=0
-
-source "$REPO_GIT/git-prompt/gitprompt.sh"
 
 #################
 # popular alias #
@@ -73,12 +76,9 @@ alias vi='vim'
 #  auto sudo  #
 ###############
 
-alias pacman='sudo pacman'
 alias reboot='sudo reboot'
 alias halt='sudo shutdown -h now'
 alias poweroff='sudo shutdown -h now'
-alias systemctl='sudo systemctl'
-alias feg='feh --scale-down'
 
 ###########
 #  Autre  #
@@ -87,7 +87,10 @@ alias feg='feh --scale-down'
 alias cpumaxfreq='sudo cpupower frequency-set -u'
 alias cpuinfo='sudo cpupower frequency-info'
 alias xpdf='xpdf -fullscreen'
-alias make="make -j${NBCORECPU}"
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # custom bashrc for this computeur
 [[ -f ~/.bashrc_custom ]] && . ~/.bashrc_custom
@@ -96,40 +99,3 @@ alias make="make -j${NBCORECPU}"
 [[ -f ~/.bash_aliases ]] && . ~/.bash_aliases
 
 
-#########
-# Proxy #
-#########
-
-function proxy_on() {
-    export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
-    export http_proxy="http://cache.etu.univ-nantes.fr:3128"
-    export https_proxy=$http_proxy
-    export ftp_proxy=$http_proxy
-    export rsync_proxy=$http_proxy
-    echo "Proxy environment variable set."
-    return 0
-}
-
-function proxy_off() {
-    unset http_proxy
-    unset https_proxy
-    unset ftp_proxy
-    unset rsync_proxy
-    echo -e "Proxy environment variable removed."
-}
-
-function proxy(){
-	export http_proxy="`~/.scripts/PACreader.py`"
-	export https_proxy=$http_proxy
-	if [ -z "$http_proxy" ]; then
-		sed -i 's/<active>true/<active>false/g' ~/.m2/settings.xml
-	else
-		sed -i 's/<active>false/<active>true/g' ~/.m2/settings.xml
-        sed -i "s/<host>.*<\/host>/<host>`echo $http_proxy | awk -F: '{print $1}'`<\/host>/g" ~/.m2/settings.xml
-        sed -i "s/<port>.*<\/port>/<port>`echo $http_proxy | awk -F: '{print $2}'`<\/port>/g" ~/.m2/settings.xml
-	fi
-}
-
-
-# added by travis gem
-[ -f /home/dralagen/.travis/travis.sh ] && source /home/dralagen/.travis/travis.sh
