@@ -79,16 +79,6 @@ zsh-git-prompt use Python or Haskell
 
 I use [zsh-completion](https://www.archlinux.org/packages/community/any/zsh-completions/) on Archlinux repository
 
-Color scheme
-------------
-
-For install color scheme for URxvt just copy _Xdefaults_ to _~/.Xdefaults_
-```
-ln -s </my/repo/config-linux>/Xdefaults ~/.Xdefaults
-```
-
-Require : rxvt-unicode urxvt-perls urxvt-font-size urxvt-tabbedex
-
 Git Config
 ----------
 
@@ -98,20 +88,6 @@ I use git for partage one config for all machine who use git.
 ln -s </my/repo/config-linux>/gitconfig ~/.gitconfig
 ```
 
-i3wm
-----
-
-Add in ~/.xinitrc
-```
-cat $HOME/.i3/config.base \
-    $HOME/.i3/config.$HOSTNAME > $HOME/.i3/config
-exec i3
-```
-
-For have a french keyboard in all session, add in /etc/X11/xinit/xinitrc.d/xinitrc.i3
-```
-setxkbmap fr
-```
 Note
 ----
 
