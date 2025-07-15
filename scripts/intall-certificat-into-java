@@ -1,0 +1,154 @@
+#!/bin/sh
+
+# Script to download and install SSL certificates into Java keystore
+# Usage: $0 <hostname> [port] [keystore-password]
+
+set -e  # Exit on any error
+
+# Default values
+DEFAULT_PORT=443
+DEFAULT_PASSWORD="changeit"
+TEMP_DIR=$(mktemp -d)
+CHAIN_FILE="${TEMP_DIR}/chain.pem"
+
+# Cleanup function
+cleanup() {
+    rm -rf "${TEMP_DIR}"
+}
+trap cleanup EXIT
+
+# Check if hostname parameter is provided
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <hostname> [port] [keystore-password]"
+    echo "Example: $0 example.com"
+    echo "Example: $0 example.com 8443"
+    echo "Example: $0 example.com 443 mypassword"
+    exit 1
+fi
+
+# Validate hostname format (basic validation)
+validate_hostname() {
+    local hostname="$1"
+    # Basic hostname validation - no spaces, valid characters
+    if echo "$hostname" | grep -qE '^[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]$'; then
+        return 0
+    else
+        echo "Error: Invalid hostname format: $hostname"
+        exit 1
+    fi
+}
+
+# Extract Common Name (CN) from certificate
+extract_cn_from_cert() {
+    local cert_file="$1"
+    local cn=""
+    
+    # Extract CN from certificate subject
+    cn=$(openssl x509 -in "$cert_file" -noout -subject 2>/dev/null | \
+         sed -n 's/.*CN=\([^,]*\).*/\1/p')
+    
+    # If CN extraction failed or is empty, try alternative method
+    if [ -z "$cn" ]; then
+        cn=$(openssl x509 -in "$cert_file" -noout -subject 2>/dev/null | \
+             grep -o 'CN=[^,]*' | \
+             cut -d'=' -f2)
+    fi
+    
+    if [ -z "$cn" ]; then
+        echo "Error: Can't extract CN for certificat"
+        exit 1
+    fi
+
+    echo "$cn"
+}
+
+# Function to add certificate to Java keystore
+add_certificate_to_keystore() {
+    local cert_file="$1"
+    local keystore_password="$2"
+    
+    if [ ! -f "$cert_file" ]; then
+        echo "Error: Certificate file $cert_file not found"
+        return 1
+    fi
+    
+    # Extract CN from certificate for meaningful alias
+    alias_name=$(extract_cn_from_cert "$cert_file")
+    
+    echo "Installing certificate: $alias_name"
+    
+    # Remove existing certificate (ignore errors)
+    keytool -delete -trustcacerts -cacerts -storepass "$keystore_password" -alias "$alias_name" -noprompt 2>/dev/null || true
+    
+    # Import new certificate
+    if ! keytool -importcert -trustcacerts -cacerts -storepass "$keystore_password" -alias "$alias_name" -file "$cert_file" -noprompt; then
+        echo "Error: Failed to import certificate $cert_file as $alias_name"
+        return 1
+    fi
+    
+    echo "Successfully installed certificate: $alias_name"
+    return 0
+}
+
+# Parse arguments
+HOSTNAME="$1"
+PORT="${2:-$DEFAULT_PORT}"
+KEYSTORE_PASSWORD="${3:-$DEFAULT_PASSWORD}"
+
+# Validate inputs
+validate_hostname "$HOSTNAME"
+
+# Validate port number
+if ! echo "$PORT" | grep -qE '^[0-9]+$' || [ "$PORT" -lt 1 ] || [ "$PORT" -gt 65535 ]; then
+    echo "Error: Invalid port number: $PORT"
+    exit 1
+fi
+
+echo "Downloading certificates from ${HOSTNAME}:${PORT}..."
+if ! sh -c "echo | openssl s_client -showcerts -connect ${HOSTNAME}:${PORT}" 2>/dev/null | \
+   awk '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/{print $0; if (/END CERTIFICATE/) print ""}' > "$CHAIN_FILE"; then
+    echo "Error: Failed to download certificates from ${HOSTNAME}:${PORT}"
+    exit 1
+fi
+
+# Check if we got any certificates
+if [ ! -s "$CHAIN_FILE" ]; then
+    echo "Error: No certificates found for ${HOSTNAME}:${PORT}"
+    exit 1
+fi
+
+# Count certificates in chain
+CERT_COUNT=$(grep -c "END CERTIFICATE" "$CHAIN_FILE")
+echo "Found $CERT_COUNT certificate(s) in chain"
+
+if [ $CERT_COUNT -ne 3 ]; then
+    echo "Error: Need exactly 3 certificates in the chain (Root, Intermediate, and Server)"
+    exit 1
+fi
+
+# Split certificate chain
+echo "Splitting certificate chain..."
+cd "$TEMP_DIR"
+if ! csplit -f cert- -n 2 "$CHAIN_FILE" '/END CERTIFICATE/+1' {$(($CERT_COUNT-1))} >/dev/null 2>&1; then
+    echo "Error: Failed to split certificate chain"
+    exit 1
+fi
+
+# Install certificates
+echo "Installing certificates into Java keystore..."
+
+# Install root certificate (cert-02)
+if [ -f "cert-02" ]; then
+    add_certificate_to_keystore "cert-02" "$KEYSTORE_PASSWORD"
+else
+    echo "Warning: Root certificate (cert-02) not found"
+fi
+
+# Install intermediate certificate (cert-01)
+if [ -f "cert-01" ]; then
+    add_certificate_to_keystore "cert-01" "$KEYSTORE_PASSWORD"
+else
+    echo "Warning: Intermediate certificate (cert-01) not found"
+fi
+
+echo "Certificate installation completed"
