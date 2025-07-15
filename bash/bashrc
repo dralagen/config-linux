@@ -98,4 +98,11 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # alias for this computeur
 [[ -f ~/.bash_aliases ]] && . ~/.bash_aliases
 
-
+#################
+#  PGP Yubikey  #
+#################
+function switchyubi() {
+	rm ~/.gnupg/private-keys-v1.d/{1D9C822CC5F05FEC13D171D2ADAF5D3E52D329DA.key,8BF9EED055E7872FDCAE02D5E2BA9661CB4F875D.key,B692F0AA90C7B1C6526A5FA2726C8577FFC59E7E.key}
+	gpgconf --kill gpg-agent
+	gpg --card-status
+}

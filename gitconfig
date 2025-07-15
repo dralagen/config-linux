@@ -1,10 +1,13 @@
 [user]
 	email = dralagen@dralagen.fr
 	name = Dralagen
+[commit]
+	gpgsign = true
+	signingkey = 7EBC7F50CE84D076
 [diff]
-        algorithm = histogram
-        colorMoved = plain
-        mnemonicPrefix = true
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
 	renames = true
 [push]
 	default = simple
