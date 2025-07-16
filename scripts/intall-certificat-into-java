@@ -44,15 +44,8 @@ extract_cn_from_cert() {
     local cn=""
     
     # Extract CN from certificate subject
-    cn=$(openssl x509 -in "$cert_file" -noout -subject 2>/dev/null | \
+    cn=$(openssl x509 -in "$cert_file" -noout -subject -nameopt RFC2253 2>/dev/null | \
          sed -n 's/.*CN=\([^,]*\).*/\1/p')
-    
-    # If CN extraction failed or is empty, try alternative method
-    if [ -z "$cn" ]; then
-        cn=$(openssl x509 -in "$cert_file" -noout -subject 2>/dev/null | \
-             grep -o 'CN=[^,]*' | \
-             cut -d'=' -f2)
-    fi
     
     if [ -z "$cn" ]; then
         echo "Error: Can't extract CN for certificat"
@@ -121,15 +114,15 @@ fi
 CERT_COUNT=$(grep -c "END CERTIFICATE" "$CHAIN_FILE")
 echo "Found $CERT_COUNT certificate(s) in chain"
 
-if [ $CERT_COUNT -ne 3 ]; then
-    echo "Error: Need exactly 3 certificates in the chain (Root, Intermediate, and Server)"
+if [ $CERT_COUNT -lt 2 ]; then
+    echo "Error: Need at least two certificates in the chain"
     exit 1
 fi
 
 # Split certificate chain
 echo "Splitting certificate chain..."
 cd "$TEMP_DIR"
-if ! csplit -f cert- -n 2 "$CHAIN_FILE" '/END CERTIFICATE/+1' {$(($CERT_COUNT-1))} >/dev/null 2>&1; then
+if ! csplit -f cert- -n 2 "$CHAIN_FILE" '/END CERTIFICATE/+1' {$(($CERT_COUNT-2))} >/dev/null 2>&1; then
     echo "Error: Failed to split certificate chain"
     exit 1
 fi
@@ -137,18 +130,11 @@ fi
 # Install certificates
 echo "Installing certificates into Java keystore..."
 
-# Install root certificate (cert-02)
-if [ -f "cert-02" ]; then
-    add_certificate_to_keystore "cert-02" "$KEYSTORE_PASSWORD"
-else
-    echo "Warning: Root certificate (cert-02) not found"
-fi
-
-# Install intermediate certificate (cert-01)
-if [ -f "cert-01" ]; then
-    add_certificate_to_keystore "cert-01" "$KEYSTORE_PASSWORD"
-else
-    echo "Warning: Intermediate certificate (cert-01) not found"
-fi
+# Install parents certificates (excluding cert-00 which is the server certificate)
+for cert_file in cert-*; do
+    if [ -f "$cert_file" ] && [ "$cert_file" != "cert-00" ]; then
+        add_certificate_to_keystore "$cert_file" "$KEYSTORE_PASSWORD"
+    fi
+done
 
 echo "Certificate installation completed"
